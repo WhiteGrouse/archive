@@ -1,0 +1,21 @@
+version: "2"
+services:
+  db:
+    image: postgres:14.5
+    ports:
+      - 5439:5432
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=archiver
+      - POSTGRES_PASSWORD=archiver
+      - POSTGRES_DB=lobi
+  archiver:
+    build: ./LobiArchiver
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./groups:/app/groups
+      - ./archive1:/archive/archive1
